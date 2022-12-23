@@ -37,7 +37,8 @@ variable "aws_secret_key"{
     type    = string
 }
 
-variable "root_password" {
-    type = string
-    default = "admin"
+variable "ssh_private_key" {
+  description = "pem file of Keypair we used to login to EC2 instances"
+  type        = string
+  default     = "./Keypair-01.pem"
 }

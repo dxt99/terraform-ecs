@@ -10,7 +10,6 @@ resource "aws_instance" "instance" {
   instance_type        = var.instance_type
   subnet_id            = element(aws_subnet.public_subnet.*.id, count.index)
   security_groups      = [aws_security_group.sg.id, ]
-  key_name             = "Keypair-01"
 
   tags = {
     "Name"        = "Instance-${count.index}"
@@ -40,10 +39,11 @@ resource "null_resource" "null" {
     on_failure = continue
   }
   connection {
-    type     = "ssh"
-    user     = "root"
-    password = "${var.root_password}"
-    host     = element(aws_eip.eip.*.public_ip, count.index)
+    type        = "ssh"
+    user        = "ec2-user"
+    port        = "22"
+    host        = element(aws_eip.eip.*.public_ip, count.index)
+    private_key = file(var.ssh_private_key)
   }
 }
 
